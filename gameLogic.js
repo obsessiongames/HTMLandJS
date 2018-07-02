@@ -18,7 +18,16 @@ var myGameArea=
         this.canvas.height = 270*2;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas,document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea,1);
+        this.interval = setInterval(updateGameArea,20);
+        window.addEventListener("keydown", function(event)
+                {
+                    myGameArea.key = event.keyCode;
+                },false)
+        window.addEventListener("keyup", function(event)
+                {
+                    myGameArea.key = false;
+                },false)
+        
     },
     clear : function()
     {
@@ -42,6 +51,22 @@ function component(width, height, color, x, y)
     }
     this.newPos = function()
     {
+        if(myGameArea.key && myGameArea.key == 37)
+        {
+            moveleft();
+        }
+        if(myGameArea.key && myGameArea.key == 39)
+        {
+            moveright();
+        }
+        if(myGameArea.key && myGameArea.key == 38)
+        {
+            moveup();
+        }
+        if(myGameArea.key && myGameArea.key == 40)
+        {
+            movedown();
+        }
         this.x += this.speedX;
         this.y += this.speedY;
     }
@@ -111,61 +136,6 @@ function stopMoveDown()
 }
 
 
-window.addEventListener("keypress", function(event)
-{
-switch(event.key)
-{
-    case "ArrowDown":
-        movedown();
-        break;
-    case "ArrowUp":
-        moveup();
-        break;
-    case "ArrowLeft":
-        moveleft();
-        break;
-    case "ArrowRight":
-        moveright();
-        break;
-    default:
-        return;
-}
-}, false);
-
-window.addEventListener("keyup", function(event)
-{
-    switch(event.key)
-    {
-        case "ArrowRight":
-    //if(myGamePiece.speedX>0)
-    //{
-        stopMoveRight();
-    //}
-    break;
-        case "ArrowLeft":
-    
-   // if(myGamePiece.speedX<0)
-    //{
-        stopMoveLeft();
-   // }
-   break;
-        case "ArrowUp":
-    //if(myGamePiece.speedY<0)
-    //{
-        stopMoveUp();
-   // }
-   break;
-        case "ArrowDown":
-    //if(myGamePiece.speedY>0)
-    //{
-        stopMoveDown();
-   //}
-   break;
-        default:
-   return;
-    }
-    
-}, false)
 
 function music(src)
 {
