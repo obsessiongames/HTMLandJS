@@ -2,6 +2,8 @@
 function startGame()
 {
     myGameArea.start();
+    myMusic = new music("music.m4a");
+    myMusic.play();
     myGamePiece = new component(30,30,"blue",10,120);
     //myGamePiece.gravity = 0.05;
     //myScore = new component("30px", "Consolas", "black", 280,40, "text");
@@ -165,3 +167,20 @@ window.addEventListener("keyup", function(event)
     
 }, false)
 
+function music(src)
+{
+    this.music = document.createElement("audio");
+    this.music.src = src;
+    this.music.setAttribute("preload","auto");
+    this.music.setAttribute("controls","none");
+    this.music.style.display = "none";
+    document.body.appendChild(this.music);
+    this.play = function()
+    {
+        this.music.play();
+    }
+    this.stop = function()
+    {
+        this.music.pause();
+    }
+}
