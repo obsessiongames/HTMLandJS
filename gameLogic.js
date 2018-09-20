@@ -7,6 +7,8 @@ function startGame()
     myGamePiece = new component(30,30,"blue",10,120);
     //myGamePiece.gravity = 0.05;
     //myScore = new component("30px", "Consolas", "black", 280,40, "text");
+
+    myObstacle = new component(10, 200, "green", 300, 120);
 }
 
 var myGameArea=
@@ -32,6 +34,11 @@ var myGameArea=
     clear : function()
     {
         this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+    },
+    
+    stop : function()
+    {
+        clearInterval(this.interval);
     }
 }
 
@@ -70,13 +77,43 @@ function component(width, height, color, x, y)
         this.x += this.speedX;
         this.y += this.speedY;
     }
+
+    this.crashWith = function(otherObj)
+    {
+        var myleft = this.x;
+        var myright = this.x + this.width;
+        var mytop = this.y;
+        var mybottom = this.y + this.height;
+        
+        var otherleft = otherObj.x;
+        var otherright = otherObj.x + otherObj.width;
+        var othertop = otherObj.y;
+        var otherbottom = otherObj.y + otherObj.height;
+        var crash = true;
+        if ((mybottom < othertop) ||
+            (mytop > otherbottom) ||
+            (myright < otherleft) ||
+            (myleft > otherleft))
+        {
+            crash = false;
+        }
+        return crash;
+    }
 }
 
 function updateGameArea()
 {
-    myGameArea.clear();
-    myGamePiece.newPos();
-    myGamePiece.update();
+    if (myGamePiece.crashWith(myObstacle))
+    {
+        myGameArea.stop();
+    }
+    else
+    {
+        myGameArea.clear();
+        myGamePiece.newPos();
+        myGamePiece.update();
+        myObstacle.update();
+    }
 }
 
 function moveup()
